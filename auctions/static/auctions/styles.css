@@ -1,0 +1,14 @@
+body {
+    padding: 10px;
+}
+
+.listing {
+    display: flex;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+}
+
+#listing-bid {
+    font-weight: bold;
+}
