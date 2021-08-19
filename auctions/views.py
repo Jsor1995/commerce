@@ -83,8 +83,9 @@ def create(request):
     })
 
 def listing(request, title):
+    print ("Starting List View")
     listing_data = Listing.objects.get(title=title)
-    print(listing_data)
+    print(listing_data.title)
     return render(request, "auctions/listing.html",{
         "listing": listing_data
     })
