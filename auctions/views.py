@@ -1,11 +1,11 @@
 from django.contrib.auth import authenticate, login, logout
-from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User, Listing, ListingForm
+from .models import User, Listing, ListingForm, BidForm
 
 def index(request):
     all_listings = Listing.objects.all()
@@ -65,6 +65,7 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
+@login_required
 def create(request):
     #if form has been completed check for validation and save.
     if request.method == "POST":
@@ -87,5 +88,11 @@ def listing(request, title):
     listing_data = Listing.objects.get(title=title)
     print(listing_data.title)
     return render(request, "auctions/listing.html",{
+        "bidForm": BidForm,
         "listing": listing_data
     })
+
+def add_watchlist(request, listing_id):
+    if request.method == "POST":
+
+        return

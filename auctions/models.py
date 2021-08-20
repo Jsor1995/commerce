@@ -14,10 +14,8 @@ CATEGORIES = [
     ("Business&Industrial", "Business & Industrial"),
     ("Music", "Music")
 ]
-
 class User(AbstractUser):
     pass
-
 class Listing(models.Model):
     title = models.CharField(max_length=64)
     description = models.CharField(max_length=300)
@@ -32,13 +30,18 @@ class Listing(models.Model):
         max_length=20,
         choices=CATEGORIES
     )
+    watchlist = models.ManyToManyField(User, related_name="watchlist")
     def __str__(self):
         return f"{self.title} created by {self.user} starting at {self.starting_bid}"
-    
 class Bids(models.Model):
-    user_id = models.IntegerField()
-    listing_id= models.IntegerField()
-    bid_value = models.IntegerField()
+    user_id = models.ForeignKey(
+        User, on_delete=models.CASCADE,null=True
+    )
+    listing_id= models.ForeignKey(
+        Listing, on_delete=models.CASCADE,null=True
+    )
+    bid_amount = models.IntegerField()
+    
 
 class Comments(models.Model):
     listing_id = models.IntegerField
@@ -53,3 +56,8 @@ class ListingForm(ModelForm):
             'description': Textarea(attrs={"rows":15, "cols":100}),
             'image': TextInput(attrs={"size":100})
         }
+
+class BidForm(ModelForm):
+    class Meta:
+        model = Bids
+        fields = ['bid_amount']

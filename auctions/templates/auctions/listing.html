@@ -2,17 +2,22 @@
 
 {% block body %}
     <h2>Listing: {{ listing.title }}</h2>
-    <div><img src={{ listing.image }}></div>
+    <a class="btn btn-primary" href="{% url watchlist listing.id%}" value = {{ listing.id }} name="watchlist">
+        Add to Watchlist
+    </a>
+    <div>
+        <img src={{ listing.image }}>
+    </div>
     <p> {{ listing.description }}</p>
     <h2>{{ listing.starting_bid }}</h2>
     <form>
-    <button type="submit"></button>
+        {{ bidForm.bid_amount }}
+        <button type="submit"></button>
     </form>
     <h3>Details</h3>
     <ul>
         <li>Created by: {{ listing.user }}</li>
         <li>Category: {{ listing.category }}</li>
     </ul>
-
 
 {% endblock %}
