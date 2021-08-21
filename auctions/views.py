@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User, Listing, ListingForm, BidForm
+from .models import User, Listing, Bids, ListingForm, BidForm
 
 def index(request):
     all_listings = Listing.objects.all()
@@ -76,8 +76,10 @@ def create(request):
             listing_data.user = request.user
             print(listing_data)
             listing_data.save()
+            
+            #input bid form with initial bid.
+            Bids.objects.create(user_id=request.user, listing_id=listing_data, bid_amount=listing_data.starting_bid, initial_bid=True)
             return HttpResponseRedirect(reverse("index"))
-
 
     return render (request, "auctions/create.html", {
         "form": ListingForm
@@ -94,5 +96,12 @@ def listing(request, title):
 
 def add_watchlist(request, listing_id):
     if request.method == "POST":
-
-        return
+        bidForm = BidForm(request.POST)
+        if bidForm.is_valid:
+            if (bidForm.bid_amount > listing_id.starting_bid):
+                print("bidForm is valid!")
+                bid_data = bidForm.save(commit=False)
+                bid_data.user_id = request.user
+                bid_data.listing_id = listing_id
+                bid_data.save()
+    return

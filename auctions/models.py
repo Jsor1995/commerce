@@ -40,7 +40,11 @@ class Bids(models.Model):
     listing_id= models.ForeignKey(
         Listing, on_delete=models.CASCADE,null=True
     )
-    bid_amount = models.IntegerField()
+    bid_amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2
+    )
+    initial_bid = models.BooleanField(null=True)
     
 
 class Comments(models.Model):
