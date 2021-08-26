@@ -2,7 +2,7 @@
 
 {% block body %}
     <h2>Listing: {{ listing.title }}</h2>
-    <a class="btn btn-primary" href="{% url watchlist listing.id%}" value = {{ listing.id }} name="watchlist">
+    <a class="btn btn-primary" href="{% url 'watchlist' listing.id %}" value = {{ listing.id }} name="watchlist">
         Add to Watchlist
     </a>
     <div>
@@ -11,8 +11,8 @@
     <p> {{ listing.description }}</p>
     <h2>{{ listing.starting_bid }}</h2>
     <form>
-        {{ bidForm.bid_amount }}
-        <button type="submit" name="new_bid"></button>
+        {{ bidForm.bid_amount }}<br><br>
+        <button class="btn btn-primary" type="submit" name="new_bid">Place Bid</button>
     </form>
     <h3>Details</h3>
     <ul>

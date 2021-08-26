@@ -87,9 +87,10 @@ def create(request):
 
 def listing(request, title):
     print ("Starting List View")
+    print(f"Title: {title}")
     listing_data = Listing.objects.get(title=title)
-    print(listing_data.title)
-    return render(request, "auctions/listing.html",{
+    print(listing_data)
+    return render(request, "auctions/listing.html", {
         "bidForm": BidForm,
         "listing": listing_data
     })
@@ -104,4 +105,4 @@ def add_watchlist(request, listing_id):
                 bid_data.user_id = request.user
                 bid_data.listing_id = listing_id
                 bid_data.save()
-    return
+        return
