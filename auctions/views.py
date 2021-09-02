@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User, Listing, Bids, ListingForm, BidForm
+from .models import User, Listing, Bids, ListingForm, BidForm, CATEGORIES
 
 def index(request):
     all_listings = Listing.objects.all()
@@ -106,3 +106,14 @@ def add_watchlist(request, listing_id):
                 bid_data.listing_id = listing_id
                 bid_data.save()
         return
+
+def categories(request):
+    print("In categories")
+    #create a list of categories
+    category_list=[]
+    for category in CATEGORIES:
+        category_list.append(category[0])
+    
+    return render(request, "auctions/categories.html",{
+        "categories":category_list
+    })

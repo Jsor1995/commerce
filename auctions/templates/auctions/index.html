@@ -1,14 +1,18 @@
 {% extends "auctions/layout.html" %}
-
+{% load static %}
 {% block body %}
     <h2>Active Listings</h2>
 
     {% for listing in listings %}
         <div class="listing">
             <div id="listing-image">
-                <img src={{ listing.image }}>
+                {% if listing.image %}
+                    <img src="{{ listing.image }}">
+                {% else %}
+                    <img src="{% static "auctions/images/Image_not_available.png" %}" alt="not_found">
+                {% endif %}
             </div>
-            <div>
+            <div id='listing-info'>
                 <h4><a id="listing-title" href="{% url 'listing' listing.title %}">{{ listing.title }}</a></h4>
                 <p id="listing-bid">Price: ${{ listing.starting_bid }}</p>
                 <p id="listing-description">{{ listing.description }}</p>

@@ -4,11 +4,46 @@ body {
 
 .listing {
     display: flex;
+    flex-flow: row wrap;
+    margin-left: auto;
     border-style: solid;
     border-color: black;
     border-width: 1px;
 }
 
+#listing-image {
+    display: flex;
+    margin: 5px;
+}
+
+#listing-image > img {
+    border: 1px solid #ddd;
+    max-width: 10vw;
+    height:auto;
+}
+
 #listing-bid {
     font-weight: bold;
+}
+
+.category-list {
+    display: flex;
+    width:45vw;
+    height: 45vw;
+    margin: auto;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+.category-block {
+    width: 32%;
+    height: 32%;
+    border-style: solid;
+    margin: 5px;
+}
+
+.category-block > h4 {
+    width:inherit;
+    text-align: center;
+    margin: auto;
 }

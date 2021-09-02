@@ -7,11 +7,11 @@ CATEGORIES = [
     ("Motors", "Motors"),
     ("Fashion", "Fashion"),
     ("Electronics", "Electronics"),
-    ("Collectibles&Art", "Collectibles & Art"),
-    ("Home&Garden", "Home & Garden"),
-    ("Sporting_Goods", "Sporting Goods"),
+    ("Collectibles and Art", "Collectibles & Art"),
+    ("Home and Garden", "Home & Garden"),
+    ("Sporting Goods", "Sporting Goods"),
     ("Toys", "Toys"),
-    ("Business&Industrial", "Business & Industrial"),
+    ("Business and Industrial", "Business & Industrial"),
     ("Music", "Music")
 ]
 class User(AbstractUser):
@@ -27,7 +27,7 @@ class Listing(models.Model):
         decimal_places=2)
     image = models.URLField(blank=True)
     category =  models.CharField(
-        max_length=20,
+        max_length=25,
         choices=CATEGORIES
     )
     watchlist = models.ManyToManyField(User, related_name="watchlist")
