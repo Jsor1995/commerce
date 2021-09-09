@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.urls import reverse
 
 from .models import User, Listing, Bids, ListingForm, BidForm, CATEGORIES
@@ -86,25 +86,39 @@ def create(request):
     })
 
 def listing(request, title):
+    listing_data = Listing.objects.get(title=title)
+    if request.method == "POST":
+        print("check if listing is in post")
+        bidForm = BidForm(request.POST)
+        if bidForm.is_valid:
+            bid_data = bidForm.save(commit=False)
+            if (bid_data.bid_amount > listing_data.starting_bid):
+                print("amount entered is bigger")
+                #money conversion
+                bid_data.bid_amount = "{:,.2f}".format(bid_data.bid_amount) 
+                bid_data.user_id = request.user
+                bid_data.listing_id = listing_data
+                bid_data.initial_bid = False
+                bid_data.save()
+                return render(request, "auctions/listing.html", {
+                    "bid_data": bid_data,
+                    "bidForm":BidForm,
+                    "listing":listing_data
+                })
     print ("Starting List View")
     print(f"Title: {title}")
-    listing_data = Listing.objects.get(title=title)
     print(listing_data)
+    bid_data = Bids.objects.filter(listing_id = listing_data).last()
+    current_bid = bid_data.bid_amount
     return render(request, "auctions/listing.html", {
+        "current_bid": current_bid,
         "bidForm": BidForm,
         "listing": listing_data
     })
 
 def add_watchlist(request, listing_id):
     if request.method == "POST":
-        bidForm = BidForm(request.POST)
-        if bidForm.is_valid:
-            if (bidForm.bid_amount > listing_id.starting_bid):
-                print("bidForm is valid!")
-                bid_data = bidForm.save(commit=False)
-                bid_data.user_id = request.user
-                bid_data.listing_id = listing_id
-                bid_data.save()
+        
         return
 
 def categories(request):
@@ -116,4 +130,13 @@ def categories(request):
     
     return render(request, "auctions/categories.html",{
         "categories":category_list
+    })
+
+def category(request, category):
+    category_entries = Listing.objects.filter(category=category)
+    print(category_entries)
+
+    return render(request, "auctions/category.html",{
+        "category": category,
+        "listings":category_entries
     })

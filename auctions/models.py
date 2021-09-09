@@ -45,6 +45,9 @@ class Bids(models.Model):
         decimal_places=2
     )
     initial_bid = models.BooleanField(null=True)
+
+    def __str__(self):
+        return f"Created by {self.user_id} for listing {self.listing_id} with bid amount {self.bid_amount}"
     
 
 class Comments(models.Model):

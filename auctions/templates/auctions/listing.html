@@ -9,8 +9,13 @@
         <img src={{ listing.image }}>
     </div>
     <p> {{ listing.description }}</p>
-    <h2>{{ listing.starting_bid }}</h2>
-    <form>
+    {% if bid_data.initial_bid is False %}
+        <h2>${{ bid_data.bid_amount }}</h2>
+    {% else %}
+        <h2>${{ current_bid }}</h2>
+    {% endif %}
+    <form action="{% url 'listing' listing.title %}" method="post">
+        {% csrf_token %}
         {{ bidForm.bid_amount }}<br><br>
         <button class="btn btn-primary" type="submit" name="new_bid">Place Bid</button>
     </form>
@@ -19,5 +24,4 @@
         <li>Created by: {{ listing.user }}</li>
         <li>Category: {{ listing.category }}</li>
     </ul>
-
 {% endblock %}
