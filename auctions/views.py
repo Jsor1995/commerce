@@ -86,6 +86,7 @@ def create(request):
     })
 
 def listing(request, title):
+    print("in listing.view")
     listing_data = Listing.objects.get(title=title)
     if request.method == "POST":
         print("check if listing is in post")
@@ -109,17 +110,19 @@ def listing(request, title):
     print(f"Title: {title}")
     print(listing_data)
     bid_data = Bids.objects.filter(listing_id = listing_data).last()
-    current_bid = bid_data.bid_amount
     return render(request, "auctions/listing.html", {
-        "current_bid": current_bid,
+        "bid_data": bid_data,
         "bidForm": BidForm,
         "listing": listing_data
     })
 
 def add_watchlist(request, listing_id):
-    if request.method == "POST":
-        
-        return
+    print("in watchlist")
+    listing_data = Listing.objects.get(pk=listing_id)
+    print(listing_data)
+    listing_data.watchlist.add(request.user)
+    print(f"{request.user} has added {listing_data.title} to the watchlist")
+    return HttpResponseRedirect(reverse("listing", kwargs={'title':listing_data.title}))
 
 def categories(request):
     print("In categories")

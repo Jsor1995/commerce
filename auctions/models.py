@@ -30,7 +30,7 @@ class Listing(models.Model):
         max_length=25,
         choices=CATEGORIES
     )
-    watchlist = models.ManyToManyField(User, related_name="watchlist")
+    watchlist = models.ManyToManyField(User, blank=True, related_name="watchlist")
     def __str__(self):
         return f"{self.title} created by {self.user} starting at {self.starting_bid}"
 class Bids(models.Model):

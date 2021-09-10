@@ -12,7 +12,7 @@
     {% if bid_data.initial_bid is False %}
         <h2>${{ bid_data.bid_amount }}</h2>
     {% else %}
-        <h2>${{ current_bid }}</h2>
+        <h2>${{ listing.starting_bid }}</h2>
     {% endif %}
     <form action="{% url 'listing' listing.title %}" method="post">
         {% csrf_token %}
